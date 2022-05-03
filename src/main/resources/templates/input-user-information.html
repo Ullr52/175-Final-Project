@@ -3,6 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Add a new user profile</title>
+<link rel="stylesheet" th:href="@{/comicStyle.css}" media="all"/>
 </head>
 <body>
 <div class="container">
@@ -11,11 +12,7 @@
   function checkForm(form)
   {
     // validation fails if the input is blank
-    if(form.userName.value == "") {
-      alert("Error: User Name is empty!");
-      form.userName.focus();
-      return false;
-    }
+    
     if(form.fName.value == "") {
         alert("Error: First Name is empty!");
         form.fName.focus();
@@ -71,7 +68,6 @@
 </script>
 <form 
 th:object="${newUser}" th:action="@{/updateUser/{id}(id=${newUser.id})}" method='POST' onsubmit = "return checkForm(this);">
-User Name: <input name = "userName" size="20" th:field="*{userName}"><br />
 First Name: <input name = "fName" size="20" th:field="*{fName}"><br />
 Last Name: <input name = "lName" size="20" th:field="*{lName}"><br />
 Street Address: <input name = "streetAddress"size="20" th:field="*{streetAddress}"><br />
@@ -82,7 +78,7 @@ Phone Number: <input name="phoneNum" size="10" th:field="*{phoneNum}"><br />
 <input type = "submit" value="Add User">
 </form> <br />
 <a href="/result-user-list">View all Users</a><br />
-<a href="../selection">Return to Home</a>
+<a href="../index.html">Return to Home</a>
 </div>
 </body>
 </html>

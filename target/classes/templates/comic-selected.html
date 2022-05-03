@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Browse Comics</title>
+<link rel="stylesheet" href="/comicStyle.css">
+</head>
+<body>
+<h1>175 Comic Shop</h1>
+<p>User: <strong th:text="${currentUser.userName}"></strong></p>
+<h2>Browse All Comics</h2>
+<form>
+<table>
+<tr>
+<th>Publisher</th>
+<th>Series Title</th>
+<th>Issue Number</th>
+<th>Author</th>
+<th>Illustrator</th>
+<th>Year Published</th>
+<th>Image</th>
+
+</tr>
+
+<tr th:each="currentComic : ${comics}">
+<td> th:text="${currentComic.publisher}" />
+<td> th:text="${currentComic.seriesTitle}" />
+<td> th:text="${currentComic.issueNum}" />
+<td> th:text="${currentComic.author}" />
+<td> th:text="${currentComic.illustrator}" />
+<td> th:text="${currentComic.yearPub}" />
+<td><a th:href="@{/addSelectedComic/{id}/{userId} (id=${currentComic.id}, userId=${currentUser.id})}">Add comic to your list</a></td>
+
+</tr>
+</table>
+
+
+</form>
+<div>
+<a class="home" href="/index.html">Return to main page</a>
+</div>
+</body>
+</html>

@@ -1,6 +1,9 @@
 package dmacc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 
 
@@ -15,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import dmacc.beans.ComicBookInformation;
-import dmacc.beans.StoreInformation;
 import dmacc.beans.UserInformation;
 import dmacc.repository.SpringComicRepository;
-import dmacc.repository.SpringStoreRepository;
 import dmacc.repository.SpringUserRepository;
 
 /**
@@ -31,73 +32,67 @@ public class WebController {
 	
 	@Autowired
 	SpringComicRepository repo;
+	
 	@Autowired
-	SpringStoreRepository repo2;
-	@Autowired
-	SpringUserRepository repo3;
+	SpringUserRepository repo2;
 	
 	
 	
-	@RequestMapping({"/", "selection"})
-	public String selection(Model model) {
-		if(repo.findAll().isEmpty()) {
-			return addNewComic(model);
-		}
-		model.addAttribute("newComics", repo.findAll());
-		return "selection";
-	}
-	
-	
-		public String selection2(Model model) {
-			if(repo2.findAll().isEmpty()) {
-		return addNewStore(model);
-			}
-			model.addAttribute("newStores", repo2.findAll());
-			return "selection";
-	}
-	
-		public String selection3(Model model) {
-			if(repo3.findAll().isEmpty()) {
-		return addNewUser(model);
-			}
-			model.addAttribute("newUsers", repo3.findAll());
-			return "selection";
+	@GetMapping("/viewAllComics")
+	public String viewAllComicsBooks(Model model) {
+		model.addAttribute("comics", repo.findAll());
+		System.out.println(repo.findAll());
+		return "result-comic-list";
 	}
 
-	@GetMapping(value = "/input-comic-information")
-	public String addNewComic(Model model) {
+	@GetMapping("/input-comic-information")
+	public String addNewComicBook(Model model) {
 		ComicBookInformation c = new ComicBookInformation();
 		model.addAttribute("newComic", c);
 		return "input-comic-information";
 	}
 	
-	@PostMapping(value = "/input-comic-information")
+	@PostMapping("/input-comic-information")
 	public String addNewComic(@ModelAttribute ComicBookInformation c, Model model) {
 		repo.save(c);
 		return viewAllComics(model);
 	}
 	
-	@RequestMapping(value = "/editComic/{id}", method = {RequestMethod.POST, RequestMethod.GET})
+	@GetMapping("/editComic/{id}")
 	public String showUpdateComic(@PathVariable("id") long id, Model model) {
 		ComicBookInformation c = repo.findById(id).orElse(null);
 		model.addAttribute("newComic", c);
 		return "input-comic-information";
 	}
 	
-	@RequestMapping(value = "/update/{id}", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/update/{id}")
 	public String revisedComic(ComicBookInformation c, Model model) {
 		repo.save(c);
 		return viewAllComics(model);
 	}
 	
-	@GetMapping("/delete/{id}")
+	@RequestMapping(value = "/delete/{id}")
 	public String deleteComic(@PathVariable("id") long id, Model model) {
 		ComicBookInformation c = repo.findById(id).orElse(null);
+		List<UserInformation> uI = repo2.findAll();
+		for(UserInformation u : uI) {
+			List<ComicBookInformation> selectedComics = u.getSelectedComics();
+			int indexToDelete = -1;
+			for (int i = 0; i < selectedComics.size(); i++) {
+				if (selectedComics.get(i).getId() == id) {
+					indexToDelete = i;
+				}
+			}
+			if (indexToDelete != -1) {
+				selectedComics.remove(indexToDelete);
+				u.setSelectedComics(selectedComics);
+			}
+		}
 		repo.delete(c);
-		return addNewComic(model);
+		return addNewComicBook(model);
 	}
 	
-	@RequestMapping(value = "/result-comic-list", method = {RequestMethod.POST, RequestMethod.GET})
+	@GetMapping("/result-comic-list")
 	
 	public String viewAllComics(Model model) {
 		if(repo.findAll().isEmpty()) {
@@ -107,47 +102,6 @@ public class WebController {
 		return "result-comic-list";
 	}
 	
-	@GetMapping("/input-store-information")
-	public String addNewStore(Model model) {
-		StoreInformation s = new StoreInformation();
-		model.addAttribute("newStore", s);
-		return "input-store-information";
-	}
-	
-	@PostMapping("/input-store-information")
-	public String addNewStore(@ModelAttribute StoreInformation s, Model model) {
-		repo2.save(s);
-		return viewAllStores(model);
-		
-	}
-	
-	@RequestMapping(value = "/editStore/{id}", method = {RequestMethod.POST, RequestMethod.GET})
-	public String showUpdateStore(@PathVariable("id") long id, Model model) {
-		StoreInformation s = repo2.findById(id).orElse(null);
-		model.addAttribute("newStore", s);
-		return "input-store-information";
-	}
-	
-	@RequestMapping(value = "/updateStore/{id}", method = {RequestMethod.POST, RequestMethod.GET})
-	public String revisedStore(StoreInformation s, Model model) {
-		repo2.save(s);
-		return viewAllStores(model);
-	}
-	
-	@GetMapping("/deleteStore/{id}")
-	public String deleteStore(@PathVariable("id") long id, Model model) {
-		StoreInformation s = repo2.findById(id).orElse(null);
-		repo2.delete(s);
-		return addNewStore(model);
-	}
-	@RequestMapping(value = "result-store-list", method = {RequestMethod.POST, RequestMethod.GET})
-	public String viewAllStores(Model model) {
-		if(repo2.findAll().isEmpty()) {
-			return viewAllStores(model);
-		}
-		model.addAttribute("newStores", repo2.findAll());
-		return "result-store-list";
-	}
 	
 	@GetMapping("/input-user-information")
 	public String addNewUser(Model model) {
@@ -157,39 +111,99 @@ public class WebController {
 	}
 	
 	@PostMapping("/input-user-information")
-	public String addNewUserc(@ModelAttribute UserInformation u, Model model) {
-		repo3.save(u);
+	public String addNewUser(@ModelAttribute UserInformation u, Model model) {
+		repo2.save(u);
 		return viewAllUsers(model);
 	}
 	
-	@RequestMapping(value = "/editUser/{id}", method = {RequestMethod.POST, RequestMethod.GET})
+	@GetMapping("/editUser/{id}")
 	public String showUpdateUser(@PathVariable("id") long id, Model model) {
-		UserInformation u = repo3.findById(id).orElse(null);
+		UserInformation u = repo2.findById(id).orElse(null);
 		model.addAttribute("newUser", u);
 		return "input-user-information";
 	}
 	
-	@RequestMapping(value = "/updateUser/{id}", method = {RequestMethod.POST, RequestMethod.GET})
+	@PostMapping("/updateUser/{id}")
 	public String revisedUser(UserInformation u, Model model) {
-		repo3.save(u);
+		repo2.save(u);
 		return viewAllUsers(model);
+	}
+	
+	@GetMapping("/displayUser/{id}")
+	public String displaySelectedComics(@PathVariable("id") long id, Model model) {
+		UserInformation u = repo2.findById(id).orElse(null);
+		model.addAttribute("currentUser", u);
+		return "currentuser";
 	}
 	
 	@GetMapping("/deleteUser/{id}")
 	public String deleteUser(@PathVariable("id") long id, Model model) {
-		UserInformation u = repo3.findById(id).orElse(null);
-		repo3.delete(u);
-		return addNewUser(model);
+		UserInformation u = repo2.findById(id).orElse(null);
+		repo2.delete(u);
+		return viewAllUsers(model);
 	}
 	
 	@RequestMapping(value = "/result-user-list", method = {RequestMethod.POST, RequestMethod.GET})
 	public String viewAllUsers(Model model) {
-		if(repo3.findAll().isEmpty()) {
+		if(repo2.findAll().isEmpty()) {
 			return viewAllUsers(model);
 		}
-		model.addAttribute("newUsers", repo3.findAll());
+		model.addAttribute("newUsers", repo2.findAll());
 		return "result-user-list";
 	}
+	@GetMapping("/addComicSelected/{id}")
+	public String selectedComic(@PathVariable("id") long id, Model model) {
+		UserInformation u = repo2.findById(id).orElse(null);
+		model.addAttribute("currentUser", u);
+		model.addAttribute("comics", repo.findAll());
+		return "addSelectedComic";
+	}
 	
+	@GetMapping("/addComicsSelectedToList/{id}/{userId}")
+	public String addSelectedComic(@PathVariable("id") long id, @PathVariable("userId") long userId, Model model) {
+		ComicBookInformation c = repo.findById(id).orElse(null);
+		UserInformation u = repo2.findById(id).orElse(null);
+		List<ComicBookInformation> selectedComics = u.getSelectedComics();
+		if(!selectedComics.contains(c)) {
+			selectedComics.add(c);
+		}
+		u.setSelectedComics(selectedComics);
+		repo2.save(u);
+		model.addAttribute("currentUser", u);
+		return "currentuser";
+	}
 	
+	@GetMapping("/deleteComicsSelected/{id}/{userId}")
+	public String deleteSelectedComic(@PathVariable("id") long id, @PathVariable("userId") long userId, Model model) {
+		UserInformation u = repo2.findById(userId).orElse(null);
+		List<ComicBookInformation> selectedComics = u.getSelectedComics();
+		int indexToDelete = 0;
+		for (int i = 0; i < selectedComics.size(); i++) {
+			if (selectedComics.get(i).getId() == id) {
+				indexToDelete = i;
+			}
+		}
+		selectedComics.remove(indexToDelete);
+		u.setSelectedComics(selectedComics);
+		repo2.save(u);
+		model.addAttribute("currentUser", u);
+		return "currentuser";
+		
+	}
+	@GetMapping("/getKeywordResults")
+	public String getSearchResults(String keyword, Model model) {
+		return "input-keyword";
+	}
+	
+	@PostMapping("/keywordSearch")
+	public String keywordSearch(String keyword, Model model) {
+		List<ComicBookInformation> c = repo.searchComicBookInformationi(keyword);
+		model.addAttribute("comicSearch", c);
+		if (c.isEmpty()) {
+			System.out.println("No Comics Found");
+			return "input-keyword";
+		}
+		System.out.println(repo.searchComicBookInformationi(keyword));
+		return "keyword-results";
+	}
 }

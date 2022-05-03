@@ -1,12 +1,12 @@
 package dmacc.beans;
 
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author jword - jord
@@ -15,34 +15,60 @@ import lombok.Data;
  */
 @Data
 @Entity
+@NoArgsConstructor
 public class ComicBookInformation {
 	@Id
 	@GeneratedValue
 	private long id;
 	private String publisher;
 	private String seriesTitle;
-	private int issueNum;
+	private String issueNum;
 	private String author;
 	private String illustrator;
-	private int yearPub;
-	
-	@Autowired
-	private ComicList comicList;
-	
-
-	
+	private String yearPub;
+	private String comicImage;
 	/**
-	 * @return the comicInformation
+	 * @param publisher
+	 * @param seriesTitle
+	 * @param issueNum
+	 * @param author
+	 * @param illustrator
 	 */
-	public ComicList getComicList() {
-		return comicList;
+	public ComicBookInformation(String publisher, String seriesTitle, String issueNum, String author,
+			String illustrator, String yearPub) {
+		super();
+		this.publisher = publisher;
+		this.seriesTitle = seriesTitle;
+		this.issueNum = issueNum;
+		this.author = author;
+		this.illustrator = illustrator;
+		this.yearPub = yearPub;
 	}
-
 	/**
-	 * @param comicInformation the comicInformation to set
+	 * @param id
+	 * @param publisher
+	 * @param seriesTitle
+	 * @param issueNum
+	 * @param author
+	 * @param illustrator
+	 * @param yearPub
+	 * @param comicImage
 	 */
-	public void setComicList(ComicList comicList) {
-		this.comicList = comicList;
+	public ComicBookInformation(long id, String publisher, String seriesTitle, String issueNum, String author,
+			String illustrator, String yearPub, String comicImage) {
+		super();
+		this.id = id;
+		this.publisher = publisher;
+		this.seriesTitle = seriesTitle;
+		this.issueNum = issueNum;
+		this.author = author;
+		this.illustrator = illustrator;
+		this.yearPub = yearPub;
+		this.comicImage = comicImage;
 	}
+	
+	
+	
+	
 
 }
