@@ -2,18 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Browse Comics</title>
+<title>Comics Available</title>
 <link rel="stylesheet" href="/comicStyle.css">
+
 </head>
 <body>
-<h1>175 Comic Shop</h1>
+<header>
+<img class="box" src="https://images.bonanzastatic.com/afu/images/4029/0017/05/51d8qpgxocl.jpg" width="200" height = "200">
+<h1>Your Cart</h1>
 <p>User: <strong th:text="${currentUser.userName}"></strong>
 <br>
 First Name:<strong th:text="${currentUser.fName}"></strong>
 <br>
 Last Name:<strong th:text="${currentUser.lName}"></strong>
 </p>
-<h2>Browse All Comics</h2>
+<h2>Buy now or save for later</h2>
+</header>
 <form>
 <table>
 <tr>
@@ -24,25 +28,33 @@ Last Name:<strong th:text="${currentUser.lName}"></strong>
 <th>Illustrator</th>
 <th>Year Published</th>
 <th>Image</th>
+<th>Price</th>
 
 </tr>
 
-<tr th:each="currentComic : ${comics}">
+<tr th:each="currentComic : ${currentUser.selectedComics}">
 <td th:text="${currentComic.publisher}" />
 <td th:text="${currentComic.seriesTitle}" />
 <td th:text="${currentComic.issueNum}" />
 <td th:text="${currentComic.author}" />
 <td th:text="${currentComic.illustrator}" />
 <td th:text="${currentComic.yearPub}" />
-<td><a th:href="@{/addComicsSelectedToList/{id}/{userId} (id=${currentComic.id}, userId=${currentUser.id})}">Add comic to your cart</a></td>
+<td th:text="${currentComic.comicImage}" />
+<td th:text="${currentComic.price}" />
+<td><a th:href="@{/deleteComicSelected/{id}/{userId} (id=${currentComic.id}, userId=${currentUser.id})}">Remove from cart</a></td>
 
 </tr>
 </table>
 
-
 </form>
 <div>
+<footer>
+<a th:href="@{/addComic/{id}(id=${currentUser.id})}">Add comic to your cart</a>
+<br>
 <a href="/index.html">Return to main page</a>
+</footer>
 </div>
+
 </body>
+
 </html>

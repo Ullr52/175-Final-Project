@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Comic Search Results!</title>
+<link rel="stylesheet" th:href="@{/comicStyle.css}" media="all"/>
+</head>
+<body>
+
+<header>
+
+<img class="box" src="https://starbaseatlanta.com/wp-content/uploads/glatb72522.jpg" width="250" height="400">
+
+
+</header>
+
+<h1>Your search has returned these results!</h1>
+
+
+<nav>
+
+<div class="dropdown">
+<button class="dropbtn">Shop Comics</button>
+<div class="dropdown-content">
+<a href="viewAllComics">Browse All Comics</a>
+
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">Shop Comics</button>
+<div class="dropdown-content">
+<a class="dropdown" href="input-comic-information">Sell your comics</a>
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">List your comics to sell</button>
+<div class="dropdown-content">
+<a href="input-user-information">Have us sell your comics</a>
+<a href="viewAllUsers">See other sellers</a>
+</div>
+</div>
+</nav>
+<form>
+
+<table>
+<tr>
+<th>Publisher</th>
+<th>Series Title</th>
+<th>Issue Number</th>
+<th>Author</th>
+<th>Illustrator</th>
+<th>Year Published</th>
+<th>Image</th>
+<th>Price</th>
+
+<tr th:each="currentComic : ${comicsSearch}">
+<td th:text="${currentComic.publisher}" />
+<td th:text="${currentComic.seriesTitle}" />
+<td th:text="${currentComic.issueNum}" />
+<td th:text="${currentComic.author}">
+<td th:text="${currentComic.illustrator}" />
+<td th:text="${currentComic.yearPub}" />
+<td th:text="${currentComic.comicImage}" />
+<td th:text="${currentComic.price}" />
+
+
+
+
+</tr>
+</table>
+
+
+
+
+</form>
+
+
+</div>
+
+</div>
+</nav>
+<a href="../index.html">Return to main page</a>
+</body>
+</html>

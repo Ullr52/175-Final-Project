@@ -8,14 +8,14 @@
 			
 		body { background-color:lightblue;
 			font-family:"Comic Sans MS", cursive, sans-serif;
-			border: thin solid black;
+			border: thick solid black;
 			border-radius:5px;
 			margin:15px;
 		}
 		
 		h1 { 
 		background-color: #f2dc8c;
-		color:#996600;
+		color:rgb(0, 0, 0);
 		text-align:center;
 		}
 		
@@ -23,12 +23,8 @@
 			background-color:#0469b3; 
 			color: white;}
 		
-		h2,h3 {color: green; }
+		h2,h3 {color: rgb(70, 70, 70); text-align:center}
 		
-		ul li {
-		padding: 2px;
-		margin: auto;
-		}
 		
 		.header {
 		border: thin solid black;
@@ -38,8 +34,8 @@
 		}
 		
 		footer	{
-				padding: 15px;
-				margin:15px;
+			background-color:#3d77fe
+				
 		}
 		
 		footer img {
@@ -67,8 +63,27 @@
 				
 			}
 			
-		p {color:blue; }
-	
+			h4 { background-color:#fe1c16;
+			font-family:"Times New Roman", Times, serif;
+			border: thin solid black;
+			border-radius:5px;
+			margin:5px;
+			font-size:30px;
+			text-align:center;
+			}
+			
+		p { 
+		background-color: #c0c0c0;
+		color:rgb(0, 0, 0);
+		font-size:20px;
+		text-align:center;
+		padding-top: 20px;
+		padding-left: 20px;
+		padding-bottom: 20px;
+		margin-left: 50px;
+		margin-bottom: 25px;
+		}
+		
 		.blueBackground { 
 			background-color:blue; 
 			color: white;}
@@ -122,6 +137,73 @@
 			background-color: #111;
 		}
 		
-	
+	button {
+			background-color: #FF5733;
+  			color: #FF5733;
+  			padding: 12px;
+  			font-size: 12px;
+  			border: thin, black;
+  			margin-right:4px;
+		}
+		.dropbtn {
+  			background-color: #000000;
+  			color: #ffffff;
+  			padding: 12px;
+  			font-size: 12px;
+  			border: black, thin;
+		}
+		.dropdown {
+  			position: relative;
+  			display: inline-block;
+  			border: black, thin;
+		}
 
+		.dropdown-content {
+  			display: none;
+  			position: absolute;
+  			background-color: #f1f1f1;
+  			min-width: 160px;
+  			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  			z-index: 1;
+		}
+
+		.dropdown-content a {
+  			color: #c0c0c0;
+  			padding: 12px 16px;
+  			text-decoration: none;
+  			display: block;
+  			border: black, thin;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #000000;
+			}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		.dropdown:hover .dropbtn {
+			background-color: #c0c0c0;
+		}
+		
+		.box{
+			float: left;
+			padding: 15px;
+		}
+		.sell {
+			background-color: #c0c0c0
+		}
+		
+		.selected {
+			background-color: #c0c0c0;
+		}
+
+		
+		table, th, td {
+			margin-left: auto;
+			margin-right: auto;
+			border: 3px solid black;
+			border-collapse: collapse;
+		}
 		

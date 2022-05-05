@@ -26,7 +26,9 @@ public class ComicBookInformation {
 	private String author;
 	private String illustrator;
 	private String yearPub;
+	private int price;
 	private String comicImage;
+	
 	/**
 	 * @param publisher
 	 * @param seriesTitle
@@ -55,7 +57,7 @@ public class ComicBookInformation {
 	 * @param comicImage
 	 */
 	public ComicBookInformation(long id, String publisher, String seriesTitle, String issueNum, String author,
-			String illustrator, String yearPub, String comicImage) {
+			String illustrator, String yearPub, String comicImage, int price) {
 		super();
 		this.id = id;
 		this.publisher = publisher;
@@ -65,6 +67,7 @@ public class ComicBookInformation {
 		this.illustrator = illustrator;
 		this.yearPub = yearPub;
 		this.comicImage = comicImage;
+		this.price = price;
 	}
 	
 	

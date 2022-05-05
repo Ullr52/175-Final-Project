@@ -69,19 +69,30 @@
   }
     
 </script>
-<form 
-
-th:object="${newComic}" th:action="@{/update/{id}(id=${newComic.id})}" method='POST' onsubmit = "return checkForm(this);">
+<header>
+<img class="box" src="https://i.pinimg.com/originals/1e/50/50/1e50501ab7af2af7acf463e7ef9ce4d7.jpg" width = "100" height = "300">
+<h1>Please enter your comic book information</h1>
+</header>
+<form class="input" th:object="${newComic}" th:action="@{/update/{id}(id=${newComic.id})}" method='POST' onsubmit = "return checkForm(this);">
 Publisher: <input name = "publisher" size="10" th:field="*{publisher}"><br />
 Series: <input name = "seriesTitle"size="10" th:field="*{seriesTitle}"><br />
 Issue Number: <input name="issuNum" size="20" th:field="*{issueNum}"><br />  
 Author: <input name = "author" size="15" th:field="*{author}"><br /> 
 Illustrator: <input name = "illustrator" size="15" th:field="*{illustrator}"><br />
 Year Published: <input name="yearPub" placeholder="1974" size="10" th:field="*{yearPub}"><br />
-<input type = "submit" value="Add Comic">
+Price: <input name="price" placeholder="0.00" size="10" th:field="*{price}"><br />
+<input name="submit" type = "submit" value="Add Comic">
 </form> <br />
+<br>
+<footer>
+<br>
+
 <a href="/result-comic-list">View all Comics</a><br />
 <a href="../index.html">Return to main page</a>
+</footer>
 </div>
+
+
+
 </body>
 </html>

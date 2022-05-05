@@ -2,17 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Add a new user profile</title>
-<link rel="stylesheet" th:href="@{/comicStyle.css}" media="all"/>
+<title>Add a new seller profile</title>
+<link rel="stylesheet" th:href="@{/comicStyle.css}">
 </head>
 <body>
+<header> <a href="../index.html">
+<img class="box" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJISM2PPLcmStQJ0VQqCF04YJ89z2qT06sZA&usqp=CAU">
+
+</a>
+</header>
+<h1>Create your own account to sell comics!</h1>
+
+
+<nav>
+
+<div class="dropdown">
+<button class="dropbtn">Shop Comics</button>
+<div class="dropdown-content">
+<a href="viewAllComics">Browse All Comics</a>
+
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">Sell your Comics</button>
+<div class="dropdown-content">
+<a class="dropdown" href="input-comic-information">Sell your comics</a>
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">List your comics to sell</button>
+<div class="dropdown-content">
+<a href="viewAllUsers">See other sellers</a>
+</div>
+</div>
+</nav>
 <div class="container">
 <script>
 
   function checkForm(form)
   {
     // validation fails if the input is blank
-    
+    if(form.userName.value == "") {
+        alert("Error: Username is empty!");
+        form.userName.focus();
+        return false;
+      }
+    if(form.passsword.value == "") {
+        alert("Error: password is empty!");
+        form.password.focus();
+        return false;
+      }
     if(form.fName.value == "") {
         alert("Error: First Name is empty!");
         form.fName.focus();
@@ -66,8 +105,14 @@
   }
     
 </script>
-<form 
-th:object="${newUser}" th:action="@{/updateUser/{id}(id=${newUser.id})}" method='POST' onsubmit = "return checkForm(this);">
+<h1>Create seller account</h1>
+<br>
+<br>
+<br>
+<br>
+<form class="input-user-information" th:object="${newUser}" th:action="@{/updateUser/{id}(id=${newUser.id})}" method='POST' onsubmit = "return checkForm(this);">
+Username:<input name="username" size="15" th:field="*{userName}"><br />
+Password:<input name="password" size="15" th:field="*{password}"><br />
 First Name: <input name = "fName" size="20" th:field="*{fName}"><br />
 Last Name: <input name = "lName" size="20" th:field="*{lName}"><br />
 Street Address: <input name = "streetAddress"size="20" th:field="*{streetAddress}"><br />
@@ -75,9 +120,10 @@ City: <input name="city" size="20" th:field="*{city}"><br />
 State: <input name = "state" size="2" th:field="*{state}"><br /> 
 Zip Code: <input name = "zipCode" size="5" th:field="*{zipCode}"><br />
 Phone Number: <input name="phoneNum" size="10" th:field="*{phoneNum}"><br />
-<input type = "submit" value="Add User">
+<input name = "submit" type= "submit" value="Add User">
 </form> <br />
-<a href="/result-user-list">View all Users</a><br />
+
+
 <a href="../index.html">Return to Home</a>
 </div>
 </body>

@@ -7,7 +7,12 @@
 </head>
 <body>
 <h1>175 Comic Shop</h1>
-<p>User: <strong th:text="${currentUser.userName}"></strong></p>
+<p>User: <strong th:text="${currentUser.userName}"></strong>
+<br>
+First Name:<strong th:text="${currentUser.fName}"></strong>
+<br>
+Last Name:<strong th:text="${currentUser.lName}"></strong>
+</p>
 <h2>Browse All Comics</h2>
 <form>
 <table>
@@ -23,13 +28,13 @@
 </tr>
 
 <tr th:each="currentComic : ${comics}">
-<td> th:text="${currentComic.publisher}" />
-<td> th:text="${currentComic.seriesTitle}" />
-<td> th:text="${currentComic.issueNum}" />
-<td> th:text="${currentComic.author}" />
-<td> th:text="${currentComic.illustrator}" />
-<td> th:text="${currentComic.yearPub}" />
-<td><a th:href="@{/addSelectedComic/{id}/{userId} (id=${currentComic.id}, userId=${currentUser.id})}">Add comic to your list</a></td>
+<td th:text="${currentComic.publisher}" />
+<td th:text="${currentComic.seriesTitle}" />
+<td th:text="${currentComic.issueNum}" />
+<td th:text="${currentComic.author}" />
+<td th:text="${currentComic.illustrator}" />
+<td th:text="${currentComic.yearPub}" />
+<td><a th:href="@{/addComicsSelectedToList/{id}/{userId} (id=${currentComic.id}, userId=${currentUser.id})}">Add comic to your cart</a></td>
 
 </tr>
 </table>
@@ -37,7 +42,7 @@
 
 </form>
 <div>
-<a class="home" href="/index.html">Return to main page</a>
+<a href="/index.html">Return to main page</a>
 </div>
 </body>
 </html>

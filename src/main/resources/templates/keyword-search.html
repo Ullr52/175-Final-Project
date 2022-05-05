@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Search for comics</title>
+
+<script type = "text/javascript">
+
+function validate(){
+	if(document.form.keyword.value == ""){
+		alert("Keyword is empty");
+		document.form.keyword.focus();
+		return false;
+	}else{
+		return true;
+	}
+}
+
+</script>
+<link rel="stylesheet" th:href="@{/comicStyle.css}">
+</head>
+
+<body>
+<header>
+
+<img class="box" src="https://www.verdict.co.uk/wp-content/uploads/2017/09/get-into-comic-books-scaled.jpg" width = "550" height = "250">
+
+
+</header>
+<h1>Search all of our comics!</h1>
+
+
+<nav>
+
+<div class="dropdown">
+<button class="dropbtn">Shop Comics</button>
+<div class="dropdown-content">
+<a href="viewAllComics">Browse All Comics</a>
+
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">List your comics to sell</button>
+<div class="dropdown-content">
+<a href="input-user-information">Have us sell your comics</a>
+<a href="viewAllUsers">See other sellers</a>
+</div>
+</div>
+</nav>
+<p>
+Looking for that rare comic? 
+
+<br>
+You can search through our extensive list of comics!
+<br>
+Look no further we have all types of graded and non-graded comics available!</p>
+
+<form name="form" th:action="@{/keywordSearch}" method='POST' action="keyword-results.html" onsubmit= return(validate())>
+
+Keyword: <input name="keyword" size="25"><br />
+<input name="submit" type="submit" value="submit">
+</form>
+<footer>
+
+<a href="../index.html">Return to main page</a>
+</footer>
+
+</body>
+</html>

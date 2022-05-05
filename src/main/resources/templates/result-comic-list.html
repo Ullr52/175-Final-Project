@@ -6,10 +6,56 @@
 <link rel="stylesheet" th:href="@{/comicStyle.css}">
 </head>
 <body>
+
+
+<header>
+<img class="box" src="https://images.bonanzastatic.com/afu/images/4029/0017/05/51d8qpgxocl.jpg" width="200" height = "200">
+
+</header>
+<h1>View All Comics</h1>
+<h2>Please make a selection</h2>
+<div class="dropdown">
+<button class="dropbtn">Search for comics</button>
+<div class="dropdown-content">
+<a href="../getKeywordResults">Browse All Comics</a>
+
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">List your comics to sell</button>
+<div class="dropdown-content">
+<a href="input-user-information">Have us sell your comics</a>
+<a href="viewAllUsers">See other sellers</a>
+</div>
+</div>
+
 <form>
 <table>
+
+<tr>
+<th>Publisher</th>
+<th>Series Title</th>
+<th>Issue Number</th>
+<th>Author</th>
+<th>Illustrator</th>
+<th>Year Published</th>
+<th>Image</th>
+
+</tr>
+
+<tr th:each="currentComic : ${comics}">
+<td th:text="${currentComic.publisher}" />
+<td th:text="${currentComic.seriesTitle}" />
+<td th:text="${currentComic.issueNum}" />
+<td th:text="${currentComic.author}" />
+<td th:text="${currentComic.illustrator}" />
+<td th:text="${currentComic.yearPub}" />
+<td th:text="${currentComic.comicImage}" />
+<td th:text="${currentComic.price}" />
 <tr th:each="currentComic : ${newComics}" >
-<td><input type="radio" name="id" value="${currentComic.id}"></td>
+
+
 <td th:text="${currentComic.id}" />
 <td th:text="${currentComic.publisher}" />
 <td th:text="${currentComic.seriesTitle}" />
@@ -17,6 +63,8 @@
 <td th:text="${currentComic.author}" />
 <td th:text="${currentComic.illustrator}" />
 <td th:text="${currentComic.yearPub}" />
+<td th:text="${currentComic.comicImage}" />
+<td th:text="${currentComic.price}" />
 <td><a th:href="@{/editComic/{id}(id=${currentComic.id})}">Edit</a></td>
 <td><a th:href="@{/delete/{id}(id=${currentComic.id})}">Delete</a></td>
 </tr>

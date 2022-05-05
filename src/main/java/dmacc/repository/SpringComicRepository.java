@@ -27,5 +27,5 @@ List<ComicBookInformation> findByPublisher(String publisher);
 
 //Custom query
 @Query("SELECT c FROM ComicBookInformation c WHERE CONCAT(c.publisher, ' ', c.seriesTitle, ' ', c.issueNum, ' ', c.author, ' ', c.illustrator, ' ', c.yearPub) LIKE %?1%")
-	public List <ComicBookInformation> searchComicBookInformationi(String keyword);
+	public List<ComicBookInformation> searchComicBookInformation(String keyword);
 }

@@ -2,6 +2,7 @@ package dmacc.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -14,9 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import dmacc.beans.ComicBookInformation;
 import dmacc.beans.UserInformation;
 import dmacc.repository.SpringComicRepository;
@@ -39,7 +37,7 @@ public class WebController {
 	
 	
 	@GetMapping("/viewAllComics")
-	public String viewAllComicsBooks(Model model) {
+	public String viewAllComicBooks(Model model) {
 		model.addAttribute("comics", repo.findAll());
 		System.out.println(repo.findAll());
 		return "result-comic-list";
@@ -55,7 +53,7 @@ public class WebController {
 	@PostMapping("/input-comic-information")
 	public String addNewComic(@ModelAttribute ComicBookInformation c, Model model) {
 		repo.save(c);
-		return viewAllComics(model);
+		return viewAllComicBooks(model);
 	}
 	
 	@GetMapping("/editComic/{id}")
@@ -65,18 +63,18 @@ public class WebController {
 		return "input-comic-information";
 	}
 	
-	@RequestMapping(value = "/update/{id}")
+	@PostMapping("/update/{id}")
 	public String revisedComic(ComicBookInformation c, Model model) {
 		repo.save(c);
-		return viewAllComics(model);
+		return viewAllComicBooks(model);
 	}
 	
-	@RequestMapping(value = "/delete/{id}")
+	@GetMapping("/delete/{id}")
 	public String deleteComic(@PathVariable("id") long id, Model model) {
 		ComicBookInformation c = repo.findById(id).orElse(null);
-		List<UserInformation> uI = repo2.findAll();
-		for(UserInformation u : uI) {
-			List<ComicBookInformation> selectedComics = u.getSelectedComics();
+		List<UserInformation> users = repo2.findAll();
+		for(UserInformation u : users) {
+			List <ComicBookInformation> selectedComics = u.getSelectedComics();
 			int indexToDelete = -1;
 			for (int i = 0; i < selectedComics.size(); i++) {
 				if (selectedComics.get(i).getId() == id) {
@@ -89,18 +87,9 @@ public class WebController {
 			}
 		}
 		repo.delete(c);
-		return addNewComicBook(model);
+		return viewAllComicBooks(model);
 	}
 	
-	@GetMapping("/result-comic-list")
-	
-	public String viewAllComics(Model model) {
-		if(repo.findAll().isEmpty()) {
-			return viewAllComics(model);
-		}
-		model.addAttribute("newComics", repo.findAll());
-		return "result-comic-list";
-	}
 	
 	
 	@GetMapping("/input-user-information")
@@ -123,6 +112,7 @@ public class WebController {
 		return "input-user-information";
 	}
 	
+	
 	@PostMapping("/updateUser/{id}")
 	public String revisedUser(UserInformation u, Model model) {
 		repo2.save(u);
@@ -133,7 +123,7 @@ public class WebController {
 	public String displaySelectedComics(@PathVariable("id") long id, Model model) {
 		UserInformation u = repo2.findById(id).orElse(null);
 		model.addAttribute("currentUser", u);
-		return "currentuser";
+		return "display-user";
 	}
 	
 	@GetMapping("/deleteUser/{id}")
@@ -143,40 +133,37 @@ public class WebController {
 		return viewAllUsers(model);
 	}
 	
-	@RequestMapping(value = "/result-user-list", method = {RequestMethod.POST, RequestMethod.GET})
+	@GetMapping("/viewAllUsers")
 	public String viewAllUsers(Model model) {
-		if(repo2.findAll().isEmpty()) {
-			return viewAllUsers(model);
-		}
-		model.addAttribute("newUsers", repo2.findAll());
+		model.addAttribute("users", repo2.findAll());
 		return "result-user-list";
 	}
-	@GetMapping("/addComicSelected/{id}")
-	public String selectedComic(@PathVariable("id") long id, Model model) {
+	@GetMapping("/addComic/{id}")
+	public String selectComic(@PathVariable("id") long id, Model model) {
 		UserInformation u = repo2.findById(id).orElse(null);
 		model.addAttribute("currentUser", u);
 		model.addAttribute("comics", repo.findAll());
-		return "addSelectedComic";
+		return "comic-selected";
 	}
 	
 	@GetMapping("/addComicsSelectedToList/{id}/{userId}")
-	public String addSelectedComic(@PathVariable("id") long id, @PathVariable("userId") long userId, Model model) {
+	public String addSelectedComics(@PathVariable("id") long id, @PathVariable("userId") long userId, Model model) {
 		ComicBookInformation c = repo.findById(id).orElse(null);
-		UserInformation u = repo2.findById(id).orElse(null);
-		List<ComicBookInformation> selectedComics = u.getSelectedComics();
+		UserInformation u = repo2.findById(userId).orElse(null);
+		List <ComicBookInformation> selectedComics = u.getSelectedComics();
 		if(!selectedComics.contains(c)) {
 			selectedComics.add(c);
 		}
 		u.setSelectedComics(selectedComics);
 		repo2.save(u);
 		model.addAttribute("currentUser", u);
-		return "currentuser";
+		return "display-user";
 	}
 	
-	@GetMapping("/deleteComicsSelected/{id}/{userId}")
+	@GetMapping("/deleteComicSelected/{id}/{userId}")
 	public String deleteSelectedComic(@PathVariable("id") long id, @PathVariable("userId") long userId, Model model) {
 		UserInformation u = repo2.findById(userId).orElse(null);
-		List<ComicBookInformation> selectedComics = u.getSelectedComics();
+		List <ComicBookInformation> selectedComics = u.getSelectedComics();
 		int indexToDelete = 0;
 		for (int i = 0; i < selectedComics.size(); i++) {
 			if (selectedComics.get(i).getId() == id) {
@@ -187,23 +174,23 @@ public class WebController {
 		u.setSelectedComics(selectedComics);
 		repo2.save(u);
 		model.addAttribute("currentUser", u);
-		return "currentuser";
+		return "display-user";
 		
 	}
 	@GetMapping("/getKeywordResults")
-	public String getSearchResults(String keyword, Model model) {
-		return "input-keyword";
+	public String getKeywordResults(String keyword, Model model) {
+		return "keyword-search";
 	}
 	
 	@PostMapping("/keywordSearch")
 	public String keywordSearch(String keyword, Model model) {
-		List<ComicBookInformation> c = repo.searchComicBookInformationi(keyword);
-		model.addAttribute("comicSearch", c);
+		List<ComicBookInformation> c = repo.searchComicBookInformation(keyword);
+		model.addAttribute("comicsSearch", c);
 		if (c.isEmpty()) {
 			System.out.println("No Comics Found");
-			return "input-keyword";
+			return "keyword-search";
 		}
-		System.out.println(repo.searchComicBookInformationi(keyword));
+		System.out.println(repo.searchComicBookInformation(keyword));
 		return "keyword-results";
 	}
 }
